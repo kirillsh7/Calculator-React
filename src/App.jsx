@@ -57,7 +57,7 @@ const App = () => {
   return (
     <div className='bg-gray-400 h-80 w-70 justify-center flex-col p-5 rounded-lg alig'>
       <div className='bg-gray-100  w-60 h-12 rounded-sm mb-5 overflow-hidden   '>
-        <p className=' align-text-bottom text-right '>
+        <p className=' text-right h-full pt-5 '>
           {display !== '' ? display : operand1 + operator + operand2}
 
         </p>
@@ -66,6 +66,7 @@ const App = () => {
         <div className='grid grid-cols-3 gap-1 col-end-1'>
           {NUMS.map((number, index) => (
             <button
+              className={index === NUMS.length - 1 ? "col-start-2" : ""}
               key={index}
               onClick={e => (
                 operator === '' ? handleClickOperand1(e) :
