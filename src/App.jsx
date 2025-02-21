@@ -15,11 +15,12 @@ const App = () => {
     setOperator('')
   }
   const handleClickOperand = (number) => {
-    operator === '' ? setOperand1(operand1 + number) : setOperand2(operand2 + number)
+    !operator ? setOperand1(operand1 + number) : setOperand2(operand2 + number)
   }
 
   const handleClickOperator = (oper) => {
-    if (operand1 !== '') {
+    let sum = null
+    if (operand1) {
       if (oper === '+' || oper === '-' || oper === '') {
         setIsActive(false)
         setOperator(oper)
@@ -31,13 +32,8 @@ const App = () => {
     }
     if (oper === '=') {
 
-      if (
-        operand1 !== '' &&
-        operator !== '' &&
-        operand2 !== ''
-      ) {
+      if (operand1 && operator && operand2) {
         setIsActive(true)
-        let sum = null
         operator === '+' ? sum = +operand1 + +operand2 : sum = +operand1 - +operand2
         resetDisplay()
         setOperand1(sum)
