@@ -6,7 +6,7 @@ const App = () => {
   const [operand1, setOperand1] = useState('')
   const [operand2, setOperand2] = useState('')
   const [operator, setOperator] = useState('')
-  const [display, setDisplay] = useState('')
+  const [isActive, setIsActive] = useState(false)
   const NUMS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
   const OPERATOR = ['+', '-', 'C', '=']
   const resetDisplay = () => {
@@ -14,51 +14,43 @@ const App = () => {
     setOperand2('')
     setOperator('')
   }
-  const handleClickOperand1 = (number) => {
-
-    setOperand1(operand1 + number.target.textContent)
-
+  const handleClickOperand = (number) => {
+    operator === '' ? setOperand1(operand1 + number) : setOperand2(operand2 + number)
   }
-  const handleClickOperand2 = (number) => {
 
-    setOperand2(operand2 + number.target.textContent)
-
-  }
   const handleClickOperator = (oper) => {
     if (operand1 !== '') {
-      if (
-        oper.target.textContent === '+' ||
-        oper.target.textContent === '-' ||
-        oper.target.textContent === ''
-      ) {
-        setOperator(oper.target.textContent)
-
+      if (oper === '+' || oper === '-' || oper === '') {
+        setIsActive(false)
+        setOperator(oper)
       }
     }
+    if (oper === 'C') {
+      resetDisplay()
+      setIsActive(false)
+    }
+    if (oper === '=') {
 
-    if (oper.target.textContent === 'C') resetDisplay()
-    console.log(operator)
-    if (oper.target.textContent === '=') {
       if (
-        operand1 !== '' ||
-        operator !== '' ||
+        operand1 !== '' &&
+        operator !== '' &&
         operand2 !== ''
       ) {
+        setIsActive(true)
         let sum = null
         operator === '+' ? sum = +operand1 + +operand2 : sum = +operand1 - +operand2
         resetDisplay()
-        setDisplay(sum)
+        setOperand1(sum)
 
       }
     }
-
 
   }
   return (
     <div className='bg-gray-400 h-80 w-70 justify-center flex-col p-5 rounded-lg alig'>
       <div className='bg-gray-100  w-60 h-12 rounded-sm mb-5 overflow-hidden   '>
-        <p className=' text-right h-full pt-5 '>
-          {display !== '' ? display : operand1 + operator + operand2}
+        <p className={isActive ? ' text-right h-full pt-5 text-orange-800 ' : ' text-right h-full pt-5 '}>
+          {operand1 + operator + operand2}
 
         </p>
       </div>
@@ -68,10 +60,7 @@ const App = () => {
             <button
               className={index === NUMS.length - 1 ? "col-start-2" : ""}
               key={index}
-              onClick={e => (
-                operator === '' ? handleClickOperand1(e) :
-                  handleClickOperand2(e)
-              )}
+              onClick={handleClickOperand.bind(null, number)}
             >
               <p className='text-2xl'>
                 {number}
@@ -82,10 +71,11 @@ const App = () => {
         <div className='grid grid-cols-1 gap-1'>
           {OPERATOR.map((oper, index) => (
             <button
+              className={'click:'}
               key={index}
-              onClick={handleClickOperator.bind(oper)}
+              onClick={handleClickOperator.bind(null, oper)}
             >
-              <p className='text-lg'>
+              <p className={'text-lg'}>
                 {oper}
               </p>
             </button>
